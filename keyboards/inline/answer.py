@@ -11,7 +11,7 @@ def answer_btn(name, username, userid):
                     )
                 ],
                 [
-                    InlineKeyboardButton(text="Javob yozish ✍️", callback_data=f'answer_{userid}')
+                    InlineKeyboardButton(text="Напишите ответ ✍️", callback_data=f'answer_{userid}')
                 ]
             ]
         )
@@ -22,7 +22,7 @@ def answer_btn(name, username, userid):
                    InlineKeyboardButton(text=name, callback_data=f"user_private")
                 ],
                 [
-                    InlineKeyboardButton(text="Javob yozish ✍️", callback_data=f'answer_{userid}')
+                    InlineKeyboardButton(text="Напишите ответ ✍️", callback_data=f'answer_{userid}')
                 ]
             ]
         )

@@ -6,7 +6,7 @@ def menu():
         one_time_keyboard=True,
         keyboard=[
             [
-                KeyboardButton(text="📨 Xabar yuborish")
+                KeyboardButton(text="📨 Задать вопрос")
             ]
         ]
     )

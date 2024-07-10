@@ -6,7 +6,7 @@ def cancel_btn():
         one_time_keyboard=True,
         keyboard=[
             [
-                KeyboardButton(text="⬅️ Bekor qilish")
+                KeyboardButton(text="⬅️ Отмена")
             ]
         ]
     )
