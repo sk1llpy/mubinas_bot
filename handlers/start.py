@@ -3,7 +3,7 @@ from aiogram import types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import CommandStart, StateFilter
 
-from keyboards.default import menu, cancel
+from keyboards.default import cancel
 from keyboards.inline import answer
 
 from states.send_letter import SendLetterState, SendAnswerState
@@ -18,31 +18,19 @@ async def start_handler(message: types.Message, state: FSMContext):
         add_user(message.from_user.id)
 
     if not message.from_user.id == ADMIN:
-        if not await state.get_state():
-            await message.answer(f"<b>Привет {message.from_user.full_name} 👋</b>", reply_markup=menu.menu())
-        else:
-            await message.answer("<b>Сообщение было отменено ❌</b>")
+        await message.answer(f"<b>Привет {message.from_user.full_name} 👋</b>", reply_markup=types.ReplyKeyboardRemove())
+        await message.answer(f"<b>Напишите свой вопрос 👇</b>", reply_markup=types.ReplyKeyboardRemove())
+        await state.set_state(SendLetterState.text)
     else:
         if not await state.get_state():
             await message.answer(f"<b>Привет Мубина, добро пожаловать в бот 👋</b>", reply_markup=types.ReplyKeyboardRemove())
         else:
             await message.answer("<b>Отменено ❌</b>")
 
-@dp.message(lambda msg: msg.text == "📨 Задать вопрос")
-async def send_letter_handler(message: types.Message, state: FSMContext):
-    if not message.from_user.id == ADMIN:
-        await state.set_state(SendLetterState.text)
-        await message.answer("<b>Введите вопрос 👇</b>", reply_markup=cancel.cancel_btn())
-
-
-@dp.message(lambda msg: msg.text == "⬅️ Отмена", StateFilter(SendLetterState.text))
-async def send_letter_cancel(message: types.Message, state: FSMContext):
-    await state.clear()
-    await message.answer("<b>Отменено ❌</b>", reply_markup=menu.menu())
 
 @dp.message(lambda msg: msg.content_type == 'text', StateFilter(SendLetterState.text))
 async def send_text_handler(message: types.Message, state: FSMContext):
-    await message.answer("<b>Вопрос отправлено ✅</b>", reply_markup=menu.menu())
+    await message.answer("<b>Вопрос отправлено ✅</b>\n\n<i>Нажмите /start, чтобы задать еще один вопрос</i>")
 
     try:
         await bot.send_message(chat_id=ADMIN, text=f"""<b>📨 Новое вопрос отправлено</b>
